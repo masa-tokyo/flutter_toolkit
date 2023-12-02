@@ -1,0 +1,25 @@
+import 'dart:io';
+
+/// 使い方をターミナル上に表示するための関数
+///
+/// helpオプションが指定された時や誤った使い方がされた時に用いる。
+/// 誤った使い方がされた場合、[exitCode]を1にして[errorMessage]を表示する。
+void showUsage({String? errorMessage}) {
+  if (errorMessage != null) {
+    exitCode = 1;
+    stderr.writeln('[ERROR] $errorMessage');
+  }
+
+  const usage = '''
+    
+Usage: fvm dart run bootstrap_package <パッケージ名> [options]
+
+Options:
+-d, --description <パッケージ説明>     パッケージの説明を指定
+-h, --help　　　　　　　               使い方を表示
+
+Example:
+  fvm dart run bootstrap_package login_form -d "ログインフォーム用Flutterパッケージ"
+    ''';
+  stdout.writeln(usage);
+}

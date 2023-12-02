@@ -18,7 +18,7 @@ packages:
     source: hosted
     version: "6.3.0"
   args:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: args
       sha256: eef6c46b622e0494a36c5a12d10d77fb4e855501a91c1b9ef9339326e58f0596
@@ -162,7 +162,7 @@ packages:
     source: hosted
     version: "0.12.16"
   meta:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: meta
       sha256: d584fa6707a52763a52446f02cc621b077888fb63b93bbcb1143a7be5a0c0c04
@@ -194,7 +194,7 @@ packages:
     source: hosted
     version: "2.1.0"
   path:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path
       sha256: "8829d8a55c13fc0e37127c29fedf290c102f4e40ae94ada574091fe0ff96c917"
@@ -218,7 +218,7 @@ packages:
     source: hosted
     version: "1.5.1"
   pub_semver:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: pub_semver
       sha256: "40d3ab1bbd474c4c2328c91e3a7df8c6dd629b79ece4c4bd04bee496a224fb0c"

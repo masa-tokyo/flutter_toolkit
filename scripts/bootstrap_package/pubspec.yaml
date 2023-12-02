@@ -7,6 +7,10 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
+  args: ^2.4.2
+  meta: ^1.9.1
+  path: ^1.8.3
+  pub_semver: ^2.1.4
   # path: ^1.8.0
 
 dev_dependencies:
