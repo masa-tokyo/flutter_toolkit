@@ -1,5 +1,8 @@
-import 'package:bootstrap_package/bootstrap_package.dart' as bootstrap_package;
+import 'package:bootstrap_package/run_command.dart';
 
-void main(List<String> arguments) {
-  print('Hello world: ${bootstrap_package.calculate()}!');
-}
+/// 新規パッケージ作成用の関数
+///
+/// FDSプロジェクトのルートディレクトリから以下のコマンドにより実行する。
+/// `fvm dart run bootstrap_package <パッケージ名>`
+/// 実際の処理内容は[runCommand]に記述する。
+void main(List<String> args) => runCommand(args);
