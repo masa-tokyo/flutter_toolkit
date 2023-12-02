@@ -1,7 +1,6 @@
 name: bootstrap_package
 description: A sample command-line application.
 version: 1.0.0
-# repository: https://github.com/my_org/my_repo
 
 environment:
   sdk: ^3.2.1
@@ -11,5 +10,5 @@ dependencies:
   # path: ^1.8.0
 
 dev_dependencies:
-  lints: ^2.1.0
+  pedantic_mono: any
   test: ^1.24.0
