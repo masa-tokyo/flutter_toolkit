@@ -1,0 +1,16 @@
+# プロジェクト名
+name: flutter_toolkit
+
+# 対象を指定
+packages:
+  - packages/**
+  - examples/**
+
+# flutterバージョンはfvmを参照
+sdkPath: '.fvm/flutter_sdk'
+
+# `melos bs`実行時にpubspec.yaml上のdartバージョン表記を一括で設定
+command:
+  bootstrap:
+    environment:
+      sdk: ^3.2.0
