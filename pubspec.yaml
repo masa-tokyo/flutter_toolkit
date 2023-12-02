@@ -15,6 +15,8 @@ dependencies:
   melos: ^3.3.0
 
 dev_dependencies:
+  bootstrap_package:
+    path: scripts/bootstrap_package
   flutter_test:
     sdk: flutter
   pedantic_mono: any

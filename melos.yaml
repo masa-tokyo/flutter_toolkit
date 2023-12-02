@@ -5,6 +5,7 @@ name: flutter_toolkit
 packages:
   - packages/**
   - examples/**
+  - scripts/**
 
 # flutterバージョンはfvmを参照
 sdkPath: '.fvm/flutter_sdk'
