@@ -1,3 +1,4 @@
+import 'package:adaptive_image/adaptive_image.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -56,6 +57,9 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            const AdaptiveImage(
+              imagePath: 'assets/images/flutter_logo@3x.png',
             ),
           ],
         ),

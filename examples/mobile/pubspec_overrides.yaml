@@ -1,0 +1,4 @@
+# melos_managed_dependency_overrides: adaptive_image
+dependency_overrides:
+  adaptive_image:
+    path: ../../packages/adaptive_image
