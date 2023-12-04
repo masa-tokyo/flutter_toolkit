@@ -1,17 +1,15 @@
 name: bootstrap_package
-description: A sample command-line application.
+description: A command-line application to bootstrap formatted Flutter packages.
 version: 1.0.0
 
 environment:
   sdk: ^3.2.0
 
-# Add regular dependencies here.
 dependencies:
   args: ^2.4.2
   meta: ^1.9.1
   path: ^1.8.3
   pub_semver: ^2.1.4
-  # path: ^1.8.0
 
 dev_dependencies:
   pedantic_mono: any
