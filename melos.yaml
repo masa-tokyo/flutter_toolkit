@@ -1,17 +1,26 @@
-# プロジェクト名
 name: flutter_toolkit
 
-# 対象を指定
 packages:
   - packages/**
   - examples/**
   - scripts/**
 
-# flutterバージョンはfvmを参照
 sdkPath: '.fvm/flutter_sdk'
 
-# `melos bs`実行時にpubspec.yaml上のdartバージョン表記を一括で設定
 command:
+  clean:
+    hooks:
+      post: melos exec --flutter -- "flutter clean"
   bootstrap:
     environment:
       sdk: ^3.2.0
+
+scripts:
+  test: melos exec --flutter -- "flutter test" && melos exec --dir-exists="bin" -- "dart test"
+  format: dart format .
+  fix: melos exec "dart fix --apply"
+  analyze:
+    # Set concurrency to 1 to avoid crashes on low-spec machines like GitHub Actions.
+    run: |
+      melos exec -c 1 -- \
+        dart analyze . --fatal-infos
