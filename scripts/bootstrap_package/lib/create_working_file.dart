@@ -13,6 +13,6 @@ void createWorkingFile({required String packageName}) {
   // lib直下のファイルへexport文を記載
   final exportStatement = '''
 export 'src/$baseFileName';
-  ''';
+''';
   File(path.join('lib', baseFileName)).writeAsStringSync(exportStatement);
 }
