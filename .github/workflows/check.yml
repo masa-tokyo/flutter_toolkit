@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: ./.github/workflows/bootstrap-project
+      - uses: ./.github/workflows/bootstrap_project
       - run: melos run analyze
       - name: 'Formatting Check'
         run: |
