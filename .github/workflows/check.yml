@@ -1,0 +1,27 @@
+name: Check
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/workflows/bootstrap-project
+      - run: melos run analyze
+      - name: 'Formatting Check'
+        run: |
+          melos run format
+          .github/workflows/scripts/validate-formatting.sh
+      - run: melos run test
