@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:bootstrap_package/overwrite_licence_file.dart';
 import 'package:bootstrap_package/show_exception.dart';
 import 'package:bootstrap_package/show_usage.dart';
 import 'package:path/path.dart' as path;
@@ -69,7 +68,9 @@ void runCommand(List<String> args) {
 
     overwritePubspecYamlFile(packageName: name, description: description);
 
-    overwriteLicenseFile();
+    // LICENSEファイル削除し、プロジェクトルートのものをsymbolic linkで追加
+    final licenseFile = File('LICENSE')..deleteSync();
+    Link(licenseFile.path).createSync(path.join('../..', licenseFile.path));
 
     // READMEファイルをパッケージ名のみに上書き
     final packageTitle = '# $name';
