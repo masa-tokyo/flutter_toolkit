@@ -8,10 +8,9 @@ environment:
   sdk: '>=3.2.1 <4.0.0'
 
 dependencies:
+  cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
-
-  cupertino_icons: ^1.0.2
   melos: ^3.3.0
 
 dev_dependencies:
