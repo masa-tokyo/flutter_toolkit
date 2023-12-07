@@ -9,8 +9,13 @@ import 'package:test/test.dart';
 /// 実際にパッケージを生成した上でテストを実行する。
 void main() {
   test('Analysis format test', () {
+    // TODO(masaki): delete after checking the absolute path
+    print('current: ${Directory.current.path}');
+    final workspacePath = Platform.environment['GITHUB_WORKSPACE'] ?? '';
+    print('workspacePath: $workspacePath');
     // // プロジェクトルートへ移動
     Directory.current = Directory('../..');
+    print('current: ${Directory.current.path}');
 
     // 一意な名前のパッケージを生成
     final now = DateTime.now().microsecondsSinceEpoch;
