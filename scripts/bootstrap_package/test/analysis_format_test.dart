@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:path/path.dart' as path;
@@ -11,12 +10,14 @@ import 'package:test/test.dart';
 void main() {
   test('Analysis format test', () {
     // TODO(masaki): delete after checking the absolute path
-    log('current: ${Directory.current.path}');
+    // ignore_for_file: avoid_print
+
+    print('current: ${Directory.current.path}');
     final workspacePath = Platform.environment['GITHUB_WORKSPACE'] ?? '';
-    log('workspacePath: $workspacePath');
+    print('workspacePath: $workspacePath');
     // // プロジェクトルートへ移動
     Directory.current = Directory('../..');
-    log('current: ${Directory.current.path}');
+    print('current: ${Directory.current.path}');
 
     // 一意な名前のパッケージを生成
     final now = DateTime.now().microsecondsSinceEpoch;
