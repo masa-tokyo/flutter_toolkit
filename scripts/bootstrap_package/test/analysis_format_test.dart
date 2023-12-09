@@ -23,30 +23,6 @@ void main() {
     // 一意な名前のパッケージを生成
     final now = DateTime.now().microsecondsSinceEpoch;
     final packageName = 'analysis_format_test_$now';
-    if (Platform.environment['GITHUB_ACTIONS'] == 'true') {
-      Process.runSync(
-        'dart',
-        [
-          'run',
-          'bootstrap_package',
-          packageName,
-          '-d',
-          'This is a test package for analysis and format check.',
-        ],
-      );
-    } else {
-      Process.runSync(
-        'fvm',
-        [
-          'dart',
-          'run',
-          'bootstrap_package',
-          packageName,
-          '-d',
-          'This is a test package for analysis and format check.',
-        ],
-      );
-    }
     final packageResult = runDart(
       [
         'run',
