@@ -36,6 +36,17 @@ void main() {
 
     print('current: ${Directory.current.path}');
 
+    final fileCreationResult = Process.runSync(
+      'touch',
+      [packageName],
+    );
+    if (fileCreationResult.exitCode == 0) {
+      print('file exists');
+      File(packageName).deleteSync();
+    } else {
+      print('file not exists');
+    }
+
     // テスト実行
     Process.runSync('melos', ['run', 'analyze']);
     Process.runSync('melos', ['run', 'format']);
