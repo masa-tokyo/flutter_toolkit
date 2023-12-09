@@ -2,22 +2,22 @@ import 'dart:io';
 
 import 'env.dart';
 
-/// dartコマンド実行用関数
+/// flutterコマンド実行用関数
 ///
-/// 実行環境に応じてfvmコマンドを付与するかを判断した上でdartコマンドを実行する。
-ProcessResult runDart(
+/// 実行環境に応じてfvmコマンドを付与するかを判断した上でflutterコマンドを実行する。
+ProcessResult runFlutter(
   List<String> arguments,
 ) {
   if (isGithubActions) {
     return Process.runSync(
-      'dart',
+      'flutter',
       arguments,
     );
   } else {
     return Process.runSync(
       'fvm',
       [
-        'dart',
+        'flutter',
         ...arguments,
       ],
     );

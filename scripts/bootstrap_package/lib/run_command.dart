@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:bootstrap_package/run_flutter.dart';
 import 'package:bootstrap_package/show_exception.dart';
 import 'package:bootstrap_package/show_usage.dart';
 import 'package:path/path.dart' as path;
@@ -45,9 +46,8 @@ void runCommand(List<String> args) {
     Directory.current = Directory('packages');
 
     // パッケージ用のプロジェクトを作成
-    Process.runSync(
-      'fvm',
-      ['flutter', 'create', '-t', 'package', name],
+    runFlutter(
+      ['create', '-t', 'package', name],
     );
 
     // 作成されたパッケージへ移動
