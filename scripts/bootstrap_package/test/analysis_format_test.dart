@@ -30,7 +30,8 @@ void main() {
         'This is a test package for analysis and format check.',
       ],
     );
-    if (isGithubActions) {
+    print('isGithubActions: $isGithubActions');
+    if (Platform.environment['GITHUB_ACTIONS'] == 'true') {
       expect(packageResult.exitCode, 1);
       print('packageResult.stdout: ${packageResult.stdout}');
       print('packageResult.stderr: ${packageResult.stderr}');
