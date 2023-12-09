@@ -47,6 +47,8 @@ void main() {
       );
     }
 
+    print('current: ${Directory.current.path}');
+
     // テスト実行
     Process.runSync('melos', ['run', 'analyze']);
     Process.runSync('melos', ['run', 'format']);
@@ -62,6 +64,7 @@ void main() {
 
     // 生成パッケージを削除
     // check whether the package actually exists
+    print('current: ${Directory.current.path}');
     if (Directory(path.join('packages', packageName)).existsSync()) {
       print('exists');
       Directory(path.join('packages', packageName)).deleteSync(recursive: true);
