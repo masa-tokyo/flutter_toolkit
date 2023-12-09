@@ -47,6 +47,27 @@ void main() {
       print('file not exists');
     }
 
+    // make a flutter package
+    final ProcessResult packageCreationResult;
+    if (Platform.environment['GITHUB_ACTIONS'] == 'true') {
+      packageCreationResult = Process.runSync(
+        'flutter',
+        ['create', '-t', 'package', packageName],
+      );
+    } else {
+      packageCreationResult = Process.runSync(
+        'fvm',
+        ['flutter', 'create', '-t', 'package', packageName],
+      );
+    }
+
+    if (packageCreationResult.exitCode == 0) {
+      print('package exists');
+      Directory(packageName).deleteSync(recursive: true);
+    } else {
+      print('package not exists');
+    }
+
     // テスト実行
     Process.runSync('melos', ['run', 'analyze']);
     Process.runSync('melos', ['run', 'format']);
