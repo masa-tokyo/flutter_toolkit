@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bootstrap_package/run_dart.dart';
 import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
 
@@ -46,6 +47,16 @@ void main() {
         ],
       );
     }
+    final packageResult = runDart(
+      [
+        'run',
+        'bootstrap_package',
+        packageName,
+        '-d',
+        'This is a test package for analysis and format check.',
+      ],
+    );
+    print('packageResult.exitCode: ${packageResult.exitCode}');
 
     print('current: ${Directory.current.path}');
 
