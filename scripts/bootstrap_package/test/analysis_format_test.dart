@@ -61,6 +61,12 @@ void main() {
     );
 
     // 生成パッケージを削除
-    Directory(path.join('packages', packageName)).deleteSync(recursive: true);
+    // check whether the package actually exists
+    if (Directory(path.join('packages', packageName)).existsSync()) {
+      print('exists');
+      Directory(path.join('packages', packageName)).deleteSync(recursive: true);
+    } else {
+      print('not exists');
+    }
   });
 }
