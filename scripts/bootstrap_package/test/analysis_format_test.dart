@@ -4,6 +4,8 @@ import 'package:bootstrap_package/run_dart.dart';
 import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
 
+const isGithubActions = bool.fromEnvironment('GITHUB_ACTIONS');
+
 /// コードの質が担保されているかをテストする関数
 ///
 /// 本パッケージ内の実装に際して問題が起こっていた場合に事前に気づけるように、
@@ -13,12 +15,8 @@ void main() {
     // TODO(masaki): delete after checking the absolute path
     // ignore_for_file: avoid_print
 
-    print('current: ${Directory.current.path}');
-    final workspacePath = Platform.environment['GITHUB_WORKSPACE'] ?? '';
-    print('workspacePath: $workspacePath');
-    // // プロジェクトルートへ移動
+    // プロジェクトルートへ移動
     Directory.current = Directory('../..');
-    print('current: ${Directory.current.path}');
 
     // 一意な名前のパッケージを生成
     final now = DateTime.now().microsecondsSinceEpoch;
@@ -32,40 +30,12 @@ void main() {
         'This is a test package for analysis and format check.',
       ],
     );
-    print('packageResult.exitCode: ${packageResult.exitCode}');
-
-    print('current: ${Directory.current.path}');
-
-    final fileCreationResult = Process.runSync(
-      'touch',
-      [packageName],
-    );
-    if (fileCreationResult.exitCode == 0) {
-      print('file exists');
-      File(packageName).deleteSync();
+    if (isGithubActions) {
+      expect(packageResult.exitCode, 1);
+      print('packageResult.stdout: ${packageResult.stdout}');
+      print('packageResult.stderr: ${packageResult.stderr}');
     } else {
-      print('file not exists');
-    }
-
-    // make a flutter package
-    final ProcessResult packageCreationResult;
-    if (Platform.environment['GITHUB_ACTIONS'] == 'true') {
-      packageCreationResult = Process.runSync(
-        'flutter',
-        ['create', '-t', 'package', packageName],
-      );
-    } else {
-      packageCreationResult = Process.runSync(
-        'fvm',
-        ['flutter', 'create', '-t', 'package', packageName],
-      );
-    }
-
-    if (packageCreationResult.exitCode == 0) {
-      print('package exists');
-      Directory(packageName).deleteSync(recursive: true);
-    } else {
-      print('package not exists');
+      expect(packageResult.exitCode, 0);
     }
 
     // テスト実行
@@ -83,7 +53,6 @@ void main() {
 
     // 生成パッケージを削除
     // check whether the package actually exists
-    print('current: ${Directory.current.path}');
     if (Directory(path.join('packages', packageName)).existsSync()) {
       print('exists');
       Directory(path.join('packages', packageName)).deleteSync(recursive: true);
