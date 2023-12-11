@@ -38,13 +38,8 @@ void main() {
 
     expect(melosBsResult.exitCode, 0, reason: melosBsResult.stderr.toString());
     // テスト実行
-    final analysisResult = Process.runSync(
-      // 'melos',
-      // ['run', 'analyze'],
-      'dart',
-      ['analyze', '.'],
-      workingDirectory: path.join('packages', packageName),
-    );
+    Directory.current = Directory(path.join('packages', packageName));
+    final analysisResult = runDart(['analyze', '.']);
     expect(
       analysisResult.exitCode,
       0,
@@ -53,24 +48,31 @@ void main() {
           '[ERROR]stderr:\n${analysisResult.stderr}\nstdout:\n${analysisResult.stdout}',
     );
 
-    Process.runSync('melos', ['run', 'format']);
-    Process.runSync(
-      path.join(
-        '.github',
-        'workflows',
-        'scripts',
-        'validate-formatting.sh',
-      ),
+    final formatResult = runDart(['format', '.']);
+    expect(
+      formatResult.exitCode,
+      0,
+      reason:
+          // ignore: lines_longer_than_80_chars
+          '[ERROR]stderr:\n${formatResult.stderr}\nstdout:\n${formatResult.stdout}',
+    );
+
+    // プロジェクトルートへ移動
+    Directory.current = Directory('../..');
+
+    final formattingResult = Process.runSync(
+      '.github/workflows/scripts/validate-formatting.sh',
       [],
+    );
+    expect(
+      formattingResult.exitCode,
+      0,
+      reason:
+          // ignore: lines_longer_than_80_chars
+          '[ERROR]stderr:\n${formattingResult.stderr}\nstdout:\n${formattingResult.stdout}',
     );
 
     // 生成パッケージを削除
-    // check whether the package actually exists
-    if (Directory(path.join('packages', packageName)).existsSync()) {
-      print('exists');
-      Directory(path.join('packages', packageName)).deleteSync(recursive: true);
-    } else {
-      print('not exists');
-    }
+    Directory(path.join('packages', packageName)).deleteSync(recursive: true);
   });
 }
