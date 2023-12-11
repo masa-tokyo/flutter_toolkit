@@ -28,19 +28,29 @@ void main() {
         'This is a test package for analysis and format check.',
       ],
     );
-    print('exitCode: ${packageResult.exitCode}');
+    print('packageResult.exitCode: ${packageResult.exitCode}');
 
+    // パッケージ生成後のanalysis_options.yamlのシンボリックリンクを同期させる
+    final melosBsResult = Process.runSync(
+      'melos',
+      ['bs'],
+    );
+
+    expect(melosBsResult.exitCode, 0, reason: melosBsResult.stderr.toString());
     // テスト実行
     final analysisResult = Process.runSync(
       // 'melos',
       // ['run', 'analyze'],
       'dart',
       ['analyze', '.'],
+      workingDirectory: path.join('packages', packageName),
     );
     expect(
       analysisResult.exitCode,
       0,
-      reason: '[ERROR]`melos run analyze` faild:\n${analysisResult.stderr}',
+      reason:
+          // ignore: lines_longer_than_80_chars
+          '[ERROR]stderr:\n${analysisResult.stderr}\nstdout:\n${analysisResult.stdout}',
     );
 
     Process.runSync('melos', ['run', 'format']);
