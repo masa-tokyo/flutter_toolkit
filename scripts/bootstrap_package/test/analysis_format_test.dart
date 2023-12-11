@@ -31,7 +31,12 @@ void main() {
     print('exitCode: ${packageResult.exitCode}');
 
     // テスト実行
-    final analysisResult = Process.runSync('melos', ['run', 'analyze']);
+    final analysisResult = Process.runSync(
+      // 'melos',
+      // ['run', 'analyze'],
+      'dart',
+      ['analyze', '.'],
+    );
     expect(
       analysisResult.exitCode,
       0,
