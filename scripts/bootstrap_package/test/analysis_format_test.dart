@@ -31,7 +31,13 @@ void main() {
     print('exitCode: ${packageResult.exitCode}');
 
     // テスト実行
-    Process.runSync('melos', ['run', 'analyze']);
+    final analysisResult = Process.runSync('melos', ['run', 'analyze']);
+    expect(
+      analysisResult.exitCode,
+      0,
+      reason: '[ERROR]`melos run analyze` faild:\n${analysisResult.stderr}',
+    );
+
     Process.runSync('melos', ['run', 'format']);
     Process.runSync(
       path.join(
