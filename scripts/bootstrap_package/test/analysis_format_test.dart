@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bootstrap_package/run_dart.dart';
+import 'package:bootstrap_package/run_flutter.dart';
 import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
 
@@ -30,15 +31,13 @@ void main() {
     );
     print('packageResult.exitCode: ${packageResult.exitCode}');
 
-    // パッケージ生成後のanalysis_options.yamlのシンボリックリンクを同期させる
-    final melosBsResult = Process.runSync(
-      'melos',
-      ['bs'],
-    );
-
-    expect(melosBsResult.exitCode, 0, reason: melosBsResult.stderr.toString());
-    // テスト実行
     Directory.current = Directory(path.join('packages', packageName));
+
+    // パッケージ生成後のanalysis_options.yamlのシンボリックリンクを同期させる
+    final pubGetResult = runFlutter(['pub', 'get']);
+    expect(pubGetResult.exitCode, 0, reason: pubGetResult.stderr.toString());
+
+    // テスト実行
     final analysisResult = runDart(['analyze', '.']);
     expect(
       analysisResult.exitCode,
