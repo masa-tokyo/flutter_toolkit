@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bootstrap_package/env.dart';
 import 'package:bootstrap_package/run_dart.dart';
 import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
@@ -26,23 +27,28 @@ void main() {
       ],
     );
     _expectNonErrorResult(packageResult);
-
+    addTearDown(
+      () {
+        // テスト処理が途中で終了する場合を考慮して、絶対パスを指定して生成パッケージを削除
+        final projectRootPath = _findProjectRoot();
+        Directory(path.join(projectRootPath, 'packages', packageName))
+            .deleteSync(recursive: true);
+      },
+    );
     // 生成パッケージへ移動
     Directory.current = Directory(path.join('packages', packageName));
 
-    // テスト実行
+    // `dart analyze`で指摘ゼロか検証
     final analysisResult = runDart(['analyze', '.']);
     _expectNonErrorResult(analysisResult);
 
+    // `dart format`で修正が発生していないか検証
     final formatResult = runDart(['format', '.']);
     _expectNonErrorResult(formatResult);
     expect(
       formatResult.stdout,
       contains('(0 changed)'),
     );
-
-    // 生成パッケージを削除
-    Directory.current.deleteSync(recursive: true);
   });
 }
 
@@ -58,4 +64,23 @@ ${result.stderr}
 ${result.stdout}
 ''',
   );
+}
+
+/// プロジェクトルートの絶対パスを取得するメソッド
+String _findProjectRoot() {
+  if (isGithubActionsEnv) {
+    final githubWorkspace = Platform.environment['GITHUB_WORKSPACE'];
+    // TODO(masaki): 動作確認後削除
+    expect(githubWorkspace, isNotNull);
+    // ignore: avoid_print
+    print('GITHUB_WORKSPACE: $githubWorkspace');
+    return githubWorkspace!;
+  } else {
+    var currentDirectory = Directory.current;
+    // プロジェクトルートに存在するはずのmelos.yamlが見つかるまで親ディレクトリへ戻る
+    while (!File(path.join(currentDirectory.path, 'melos.yaml')).existsSync()) {
+      currentDirectory = currentDirectory.parent;
+    }
+    return currentDirectory.path;
+  }
 }
