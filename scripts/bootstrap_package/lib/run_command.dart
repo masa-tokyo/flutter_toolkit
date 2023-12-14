@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:bootstrap_package/finalize_setup.dart';
 import 'package:bootstrap_package/run_flutter.dart';
 import 'package:bootstrap_package/show_exception.dart';
 import 'package:bootstrap_package/show_usage.dart';
@@ -75,6 +76,8 @@ void runCommand(List<String> args) {
     // READMEファイルをパッケージ名のみに上書き
     final packageTitle = '# $name';
     File('README.md').writeAsStringSync(packageTitle);
+
+    finalizeSetup();
   } on FormatException catch (_) {
     // '-d'のようなoptionコマンドに続く引数が入力されていない場合
     showUsage(errorMessage: 'オプションコマンドの使い方が間違っています。');

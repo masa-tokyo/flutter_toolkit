@@ -8,7 +8,7 @@ import 'env.dart';
 ProcessResult runFlutter(
   List<String> arguments,
 ) {
-  if (isGithubActions) {
+  if (isGithubActionsEnv) {
     return Process.runSync(
       'flutter',
       arguments,

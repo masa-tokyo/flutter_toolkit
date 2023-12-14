@@ -8,7 +8,7 @@ import 'env.dart';
 ProcessResult runDart(
   List<String> arguments,
 ) {
-  if (isGithubActions) {
+  if (isGithubActionsEnv) {
     return Process.runSync(
       'dart',
       arguments,

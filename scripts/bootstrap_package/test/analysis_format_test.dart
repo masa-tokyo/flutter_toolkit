@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:bootstrap_package/run_dart.dart';
-import 'package:bootstrap_package/run_flutter.dart';
 import 'package:path/path.dart' as path;
 import 'package:test/test.dart';
 
@@ -11,9 +10,6 @@ import 'package:test/test.dart';
 /// 実際にパッケージを生成した上でテストを実行する。
 void main() {
   test('Analysis format test', () {
-    // TODO(masaki): delete after checking the absolute path
-    // ignore_for_file: avoid_print
-
     // プロジェクトルートへ移動
     Directory.current = Directory('../..');
 
@@ -33,10 +29,6 @@ void main() {
 
     // 生成パッケージへ移動
     Directory.current = Directory(path.join('packages', packageName));
-
-    // パッケージ生成後のanalysis_options.yamlのシンボリックリンクを同期させる
-    final pubGetResult = runFlutter(['pub', 'get']);
-    _expectNonErrorResult(pubGetResult);
 
     // テスト実行
     final analysisResult = runDart(['analyze', '.']);
