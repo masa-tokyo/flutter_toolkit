@@ -29,7 +29,7 @@ void main() {
     _expectNonErrorResult(packageResult);
     addTearDown(
       () {
-        // テスト処理が途中で終了する場合を考慮して、絶対パスを指定して生成パッケージを削除
+        // テスト終了時点でのディレクトリの位置に依存しないように、絶対パスを指定して生成パッケージを削除
         final projectRootPath = _findProjectRoot();
         Directory(path.join(projectRootPath, 'packages', packageName))
             .deleteSync(recursive: true);
@@ -70,10 +70,7 @@ ${result.stdout}
 String _findProjectRoot() {
   if (isGithubActionsEnv) {
     final githubWorkspace = Platform.environment['GITHUB_WORKSPACE'];
-    // TODO(masaki): 動作確認後削除
     expect(githubWorkspace, isNotNull);
-    // ignore: avoid_print
-    print('GITHUB_WORKSPACE: $githubWorkspace');
     return githubWorkspace!;
   } else {
     var currentDirectory = Directory.current;
