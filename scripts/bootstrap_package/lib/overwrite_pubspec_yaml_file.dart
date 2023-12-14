@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:bootstrap_package/run_dart.dart';
 import 'package:meta/meta.dart';
 import 'package:pub_semver/pub_semver.dart';
 
 import 'bs_package_exception.dart';
+import 'run_dart.dart';
 
 /// pubspec.yamlファイルを上書き作成するための関数
 ///

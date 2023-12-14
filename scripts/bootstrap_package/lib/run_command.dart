@@ -1,15 +1,15 @@
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:bootstrap_package/finalize_setup.dart';
-import 'package:bootstrap_package/run_flutter.dart';
-import 'package:bootstrap_package/show_exception.dart';
-import 'package:bootstrap_package/show_usage.dart';
 import 'package:path/path.dart' as path;
 
 import 'create_working_file.dart';
+import 'finalize_setup.dart';
 import 'overwrite_pubspec_yaml_file.dart';
 import 'overwrite_test_file.dart';
+import 'run_flutter.dart';
+import 'show_exception.dart';
+import 'show_usage.dart';
 
 /// コマンド実行用関数
 ///
