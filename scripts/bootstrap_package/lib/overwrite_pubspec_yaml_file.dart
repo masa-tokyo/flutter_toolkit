@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bootstrap_package/run_dart.dart';
 import 'package:meta/meta.dart';
 import 'package:pub_semver/pub_semver.dart';
 
@@ -51,14 +52,7 @@ flutter:
 /// コマンドの実行時間削減のためにこのように実装している。
 @visibleForTesting
 String getDartCaretVersion() {
-  final ProcessResult versionResult;
-  // テストを実行するGitHub Actions環境では、fvmが利用出来ないためdartコマンドにて最新stableバージョンを取得する
-  if (Platform.environment['GITHUB_ACTIONS'] == 'true') {
-    versionResult = Process.runSync('dart', ['--version']);
-  } else {
-    // ローカル環境では、fvmのdartバージョンを取得する
-    versionResult = Process.runSync('fvm', ['dart', '--version']);
-  }
+  final versionResult = runDart(['--version']);
   final versionOutput = versionResult.stdout as String;
 
   final versionMatch =
