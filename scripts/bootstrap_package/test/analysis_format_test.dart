@@ -29,49 +29,41 @@ void main() {
         'This is a test package for analysis and format check.',
       ],
     );
-    print('packageResult.exitCode: ${packageResult.exitCode}');
+    _expectNonErrorResult(packageResult);
 
+    // 生成パッケージへ移動
     Directory.current = Directory(path.join('packages', packageName));
 
     // パッケージ生成後のanalysis_options.yamlのシンボリックリンクを同期させる
     final pubGetResult = runFlutter(['pub', 'get']);
-    expect(pubGetResult.exitCode, 0, reason: pubGetResult.stderr.toString());
+    _expectNonErrorResult(pubGetResult);
 
     // テスト実行
     final analysisResult = runDart(['analyze', '.']);
-    expect(
-      analysisResult.exitCode,
-      0,
-      reason:
-          // ignore: lines_longer_than_80_chars
-          '[ERROR]stderr:\n${analysisResult.stderr}\nstdout:\n${analysisResult.stdout}',
-    );
+    _expectNonErrorResult(analysisResult);
 
     final formatResult = runDart(['format', '.']);
+    _expectNonErrorResult(formatResult);
     expect(
-      formatResult.exitCode,
-      0,
-      reason:
-          // ignore: lines_longer_than_80_chars
-          '[ERROR]stderr:\n${formatResult.stderr}\nstdout:\n${formatResult.stdout}',
-    );
-
-    // プロジェクトルートへ移動
-    Directory.current = Directory('../..');
-
-    final formattingResult = Process.runSync(
-      '.github/workflows/scripts/validate-formatting.sh',
-      [],
-    );
-    expect(
-      formattingResult.exitCode,
-      0,
-      reason:
-          // ignore: lines_longer_than_80_chars
-          '[ERROR]stderr:\n${formattingResult.stderr}\nstdout:\n${formattingResult.stdout}',
+      formatResult.stdout,
+      contains('(0 changed)'),
     );
 
     // 生成パッケージを削除
-    Directory(path.join('packages', packageName)).deleteSync(recursive: true);
+    Directory.current.deleteSync(recursive: true);
   });
+}
+
+/// [ProcessResult]がエラーで終了していないことを確認するメソッド
+void _expectNonErrorResult(ProcessResult result) {
+  expect(
+    result.exitCode,
+    0,
+    reason: '''
+エラー内容:
+${result.stderr}
+出力内容:
+${result.stdout}
+''',
+  );
 }
