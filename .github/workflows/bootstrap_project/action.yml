@@ -10,4 +10,4 @@ runs:
         cache: true
     - run: echo "MELOS_SDK_PATH=${{ env.FLUTTER_ROOT }}" >> $GITHUB_ENV
       shell: bash
-    - uses: bluefireteam/melos-action@v2
+    - uses: bluefireteam/melos-action@v3
