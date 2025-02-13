@@ -18,6 +18,8 @@ command:
 scripts:
   test: melos exec --flutter -- "flutter test" && melos exec --dir-exists="bin" -- "dart test"
   format: dart format .
+  outdated: melos exec "dart pub outdated"
+  upgrade: melos exec "dart pub upgrade --major-versions"
   fix: melos exec "dart fix --apply"
   analyze:
     # Set concurrency to 1 to avoid crashes on low-spec machines like GitHub Actions.

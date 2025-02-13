@@ -17,16 +17,10 @@ import 'show_usage.dart';
 void runCommand(List<String> args) {
   try {
     // 引数を定義
-    final parser = ArgParser()
-      ..addOption(
-        'description',
-        abbr: 'd',
-      )
-      ..addFlag(
-        'help',
-        abbr: 'h',
-        negatable: false,
-      );
+    final parser =
+        ArgParser()
+          ..addOption('description', abbr: 'd')
+          ..addFlag('help', abbr: 'h', negatable: false);
     final parsedArgs = parser.parse(args);
 
     // helpオプションが指定された場合、使い方を表示して処理を終了
@@ -47,9 +41,7 @@ void runCommand(List<String> args) {
     Directory.current = Directory('packages');
 
     // パッケージ用のプロジェクトを作成
-    runFlutter(
-      ['create', '-t', 'package', name],
-    );
+    runFlutter(['create', '-t', 'package', name]);
 
     // 作成されたパッケージへ移動
     Directory.current = Directory(name);
@@ -58,8 +50,9 @@ void runCommand(List<String> args) {
 
     // analysis_options.yamlを削除し、プロジェクトルートのものをsymbolic linkで追加
     final analysisOptionsFile = File('analysis_options.yaml')..deleteSync();
-    Link(analysisOptionsFile.path)
-        .createSync(path.join('../..', analysisOptionsFile.path));
+    Link(
+      analysisOptionsFile.path,
+    ).createSync(path.join('../..', analysisOptionsFile.path));
 
     overwriteTestFile(packageName: name);
 
