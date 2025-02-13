@@ -55,18 +55,17 @@ String getDartCaretVersion() {
   final versionResult = runDart(['--version']);
   final versionOutput = versionResult.stdout as String;
 
-  final versionMatch =
-      RegExp(r'Dart SDK version: (\d+\.\d+\.\d+)').firstMatch(versionOutput);
+  final versionMatch = RegExp(
+    r'Dart SDK version: (\d+\.\d+\.\d+)',
+  ).firstMatch(versionOutput);
   final versionString = versionMatch?.group(1);
   if (versionString == null) {
-    throw BsPackageException(
-      '''Dartバージョンの取得に失敗しました。
+    throw BsPackageException('''Dartバージョンの取得に失敗しました。
 `fvm dart --version`コマンドの実行結果内に「Dart SDK version: 1.2.3」という形式の文字列が見つかりませんでした。
 正規表現の変更を検討してください。
 
 コマンド実行結果:
-$versionOutput''',
-    );
+$versionOutput''');
   }
   final version = Version.parse(versionString);
   // melos.yamlの記述内容と揃えるために、patchバージョンは0としておく

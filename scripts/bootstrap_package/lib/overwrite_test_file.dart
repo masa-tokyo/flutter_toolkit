@@ -15,6 +15,7 @@ void main() {
 }
 ''';
 
-  File(path.join('test', '${packageName}_test.dart'))
-      .writeAsStringSync(content);
+  File(
+    path.join('test', '${packageName}_test.dart'),
+  ).writeAsStringSync(content);
 }
