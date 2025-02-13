@@ -17,24 +17,21 @@ void main() {
     // 一意な名前のパッケージを生成
     final now = DateTime.now().microsecondsSinceEpoch;
     final packageName = 'analysis_format_test_$now';
-    final packageResult = runDart(
-      [
-        'run',
-        'bootstrap_package',
-        packageName,
-        '-d',
-        'This is a test package for analysis and format check.',
-      ],
-    );
+    final packageResult = runDart([
+      'run',
+      'bootstrap_package',
+      packageName,
+      '-d',
+      'This is a test package for analysis and format check.',
+    ]);
     _expectNonErrorResult(packageResult);
-    addTearDown(
-      () {
-        // テスト終了時点でのディレクトリの位置に依存しないように、絶対パスを指定して生成パッケージを削除
-        final projectRootPath = _findProjectRoot();
-        Directory(path.join(projectRootPath, 'packages', packageName))
-            .deleteSync(recursive: true);
-      },
-    );
+    addTearDown(() {
+      // テスト終了時点でのディレクトリの位置に依存しないように、絶対パスを指定して生成パッケージを削除
+      final projectRootPath = _findProjectRoot();
+      Directory(
+        path.join(projectRootPath, 'packages', packageName),
+      ).deleteSync(recursive: true);
+    });
     // 生成パッケージへ移動
     Directory.current = Directory(path.join('packages', packageName));
 
@@ -45,10 +42,7 @@ void main() {
     // `dart format`で修正が発生していないか検証
     final formatResult = runDart(['format', '.']);
     _expectNonErrorResult(formatResult);
-    expect(
-      formatResult.stdout,
-      contains('(0 changed)'),
-    );
+    expect(formatResult.stdout, contains('(0 changed)'));
   });
 }
 
