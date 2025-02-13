@@ -3,10 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 /// assetsフォルダに格納された画像をフォーマットに応じて表示するウィジェット
 class AdaptiveImage extends StatelessWidget {
-  const AdaptiveImage({
-    super.key,
-    required this.imagePath,
-  });
+  const AdaptiveImage({super.key, required this.imagePath});
 
   /// assetsフォルダに格納されたsvg or ビットマップの画像パス
   ///
@@ -20,12 +17,7 @@ class AdaptiveImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return isSvgImage
-        ? SvgPicture.asset(
-            imagePath,
-          )
-        : Image.asset(
-            imagePath,
-            scale: 3,
-          );
+        ? SvgPicture.asset(imagePath)
+        : Image.asset(imagePath, scale: 3);
   }
 }
