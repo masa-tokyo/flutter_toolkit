@@ -5,19 +5,22 @@ import 'package:pub_semver/pub_semver.dart';
 
 import 'bs_package_exception.dart';
 import 'run_dart.dart';
+import 'run_flutter.dart';
 
 /// pubspec.yamlファイルを上書き作成するための関数
 ///
 /// プロジェクト作成段階から以下の箇所を修正：
 /// - sdkバージョンはmelos.yaml同様に最新stableをキャレット記号にて記述
 /// - flutterバージョンは削除
-/// - flutter_lintsをpedantic_monoへ置き換え
+/// - flutter_lintsを削除
 /// - 不要なhomepageフィールドの削除
 /// - 不要なコメントの削除
 /// - 意図しない配信を避けるためpublish_toフィールドを追加
 void overwritePubspecYamlFile({
   required String packageName,
   required String description,
+  required List<String> dependencies,
+  required List<String> devDependencies,
 }) {
   final dartVersion = getDartCaretVersion();
 
@@ -37,12 +40,21 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  pedantic_mono: any
 
 flutter:
 ''';
 
   File('pubspec.yaml').writeAsStringSync(content);
+
+  // dependencies を追加
+  for (final dependency in dependencies) {
+    runFlutter(['pub', 'add', dependency]);
+  }
+
+  // devDependencies を追加
+  for (final devDependency in devDependencies) {
+    runFlutter(['pub', 'add', '--dev', devDependency]);
+  }
 }
 
 /// pubspec.yamlに記載するdart sdkのバージョンを取得する関数

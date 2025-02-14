@@ -20,6 +20,8 @@ void runCommand(List<String> args) {
     final parser =
         ArgParser()
           ..addOption('description', abbr: 'd')
+          ..addMultiOption('dependencies', abbr: 'p')
+          ..addMultiOption('dev_dependencies', abbr: 'v')
           ..addFlag('help', abbr: 'h', negatable: false);
     final parsedArgs = parser.parse(args);
 
@@ -60,7 +62,17 @@ void runCommand(List<String> args) {
     var description = parsedArgs['description'] as String?;
     description ??= '$name用Flutterパッケージ';
 
-    overwritePubspecYamlFile(packageName: name, description: description);
+    final dependencies = List<String>.from(parsedArgs['dependencies'] as List);
+    final devDependencies = List<String>.from(
+      parsedArgs['dev_dependencies'] as List,
+    );
+
+    overwritePubspecYamlFile(
+      packageName: name,
+      description: description,
+      dependencies: dependencies,
+      devDependencies: devDependencies,
+    );
 
     // LICENSEファイル削除し、プロジェクトルートのものをsymbolic linkで追加
     final licenseFile = File('LICENSE')..deleteSync();

@@ -16,6 +16,8 @@ Usage: fvm dart run bootstrap_package <パッケージ名> [options]
 
 Options:
 -d, --description <パッケージ説明>     パッケージの説明を指定
+-p, --dependencies <package>        作成するパッケージの dependencies へ追加したい外部パッケージを指定
+-v, --dev_dependencies <package>    作成するパッケージの dev_dependencies へ追加したい外部パッケージを指定
 -h, --help　　　　　　　               使い方を表示
 
 Example:
