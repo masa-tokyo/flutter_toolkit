@@ -23,6 +23,9 @@ void main() {
       packageName,
       '-d',
       'This is a test package for analysis and format check.',
+      // プロジェクトルートの analysis_options.yaml で採用している pedantic_mono を追加
+      '-v',
+      'pedantic_mono',
     ]);
     _expectNonErrorResult(packageResult);
     addTearDown(() {

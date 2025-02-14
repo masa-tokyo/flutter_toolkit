@@ -15,8 +15,10 @@ void showUsage({String? errorMessage}) {
 Usage: fvm dart run bootstrap_package <パッケージ名> [options]
 
 Options:
--d, --description <パッケージ説明>     パッケージの説明を指定
--h, --help　　　　　　　               使い方を表示
+-d, --description <パッケージ説明>             パッケージの説明を指定
+-p, --dependencies <package1,package2>       作成するパッケージの dependencies へ追加したい外部パッケージを指定
+-v, --dev_dependencies <package1,package2>   作成するパッケージの dev_dependencies へ追加したい外部パッケージを指定
+-h, --help　　　　　　　                        使い方を表示
 
 Example:
   fvm dart run bootstrap_package login_form -d "ログインフォーム用Flutterパッケージ"
