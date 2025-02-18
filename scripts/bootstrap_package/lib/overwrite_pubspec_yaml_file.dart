@@ -27,18 +27,17 @@ void overwritePubspecYamlFile({
   required bool enableWorkspace,
 }) {
   final dartVersion = getDartCaretVersion();
-  final resolution = enableWorkspace ? '  resolution: workspace\n' : '';
+  final resolution = enableWorkspace ? 'resolution: workspace\n' : '';
 
   final content = '''
 name: $packageName
 description: $description
 publish_to: 'none'
 version: 0.0.1
-$resolution
+
 environment:
   sdk: $dartVersion
-resolution: workspace
-
+$resolution
 dependencies:
   flutter:
     sdk: flutter
