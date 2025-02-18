@@ -22,6 +22,7 @@ void runCommand(List<String> args) {
           ..addOption('description', abbr: 'd')
           ..addMultiOption('dependencies', abbr: 'p')
           ..addMultiOption('dev_dependencies', abbr: 'v')
+          ..addFlag('license', abbr: 'l')
           ..addFlag('help', abbr: 'h', negatable: false);
     final parsedArgs = parser.parse(args);
 
@@ -76,7 +77,10 @@ void runCommand(List<String> args) {
 
     // LICENSEファイル削除し、プロジェクトルートのものをsymbolic linkで追加
     final licenseFile = File('LICENSE')..deleteSync();
-    Link(licenseFile.path).createSync(path.join('../..', licenseFile.path));
+    final shouldAddLicense = parsedArgs['license'] as bool;
+    if (shouldAddLicense) {
+      Link(licenseFile.path).createSync(path.join('../..', licenseFile.path));
+    }
 
     // READMEファイルをパッケージ名のみに上書き
     final packageTitle = '# $name';
