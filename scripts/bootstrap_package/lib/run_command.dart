@@ -37,26 +37,13 @@ void runCommand(List<String> args) {
       return;
     }
 
-    // パッケージの種類が選択されていない場合、使い方を表示して処理を終了
-    final isFlutterPackage = parsedArgs['flutter'] as bool;
-    final isDartPackage = parsedArgs['dart'] as bool;
-    if (!isFlutterPackage && !isDartPackage) {
-      showUsage(errorMessage: 'パッケージの種類を指定してください。');
+    final packageTypeResult = PackageType.fromParsedArgs(parsedArgs);
+    // 不適切な引数の渡し方をされている場合、エラー文を表示して処理を終了
+    if (packageTypeResult.errorMessage != null) {
+      showUsage(errorMessage: packageTypeResult.errorMessage);
       return;
     }
-
-    // パッケージの種類が両方指定されている場合、使い方を表示して処理を終了
-    if (isFlutterPackage && isDartPackage) {
-      showUsage(errorMessage: 'パッケージの種類は1つだけ指定してください。');
-      return;
-    }
-
-    // TODO(masaki): add enum
-    // final packageType = PackageType.fromArgs(parsedArgs);
-    // if (packageType.errorMessage != null) {
-    //   showUsage(errorMessage: packageType.errorMessage);
-    //   return;
-    // }
+    final packageType = packageTypeResult.value!;
 
     // パッケージ名が入力されていない場合、エラー文を表示して処理を終了
     final name = parsedArgs.rest.firstOrNull;
@@ -122,5 +109,37 @@ void runCommand(List<String> args) {
     showUsage(errorMessage: 'オプションコマンドの使い方が間違っています。');
   } on Exception catch (e, s) {
     showException(e, s);
+  }
+}
+
+enum PackageType {
+  dart,
+  flutter;
+
+  const PackageType();
+
+  static ({PackageType? value, String? errorMessage}) fromParsedArgs(
+    ArgResults parsedArgs,
+  ) {
+    final isFlutterPackage = parsedArgs['flutter'] as bool;
+    final isDartPackage = parsedArgs['dart'] as bool;
+
+    // パッケージの種類が選択されていない場合
+    if (!isFlutterPackage && !isDartPackage) {
+      return (value: null, errorMessage: 'パッケージの種類を指定してください。');
+    }
+
+    // パッケージの種類が両方指定されている場合
+    if (isFlutterPackage && isDartPackage) {
+      return (value: null, errorMessage: 'パッケージの種類は1つだけ指定してください。');
+    }
+
+    assert(isFlutterPackage || isDartPackage);
+
+    if (isFlutterPackage) {
+      return (value: PackageType.flutter, errorMessage: null);
+    } else {
+      return (value: PackageType.dart, errorMessage: null);
+    }
   }
 }
