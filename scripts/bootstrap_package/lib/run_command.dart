@@ -22,6 +22,9 @@ void runCommand(List<String> args) {
           ..addOption('description', abbr: 'd')
           ..addMultiOption('dependencies', abbr: 'p')
           ..addMultiOption('dev_dependencies', abbr: 'v')
+          ..addFlag('flutter', abbr: 'f')
+          // TODO(masaki): consider abbr against description
+          ..addFlag('dart', abbr: 'd')
           ..addFlag('workspace', abbr: 'w')
           ..addFlag('license', abbr: 'l')
           ..addFlag('help', abbr: 'h', negatable: false);
@@ -34,6 +37,27 @@ void runCommand(List<String> args) {
       return;
     }
 
+    // パッケージの種類が選択されていない場合、使い方を表示して処理を終了
+    final isFlutterPackage = parsedArgs['flutter'] as bool;
+    final isDartPackage = parsedArgs['dart'] as bool;
+    if (!isFlutterPackage && !isDartPackage) {
+      showUsage(errorMessage: 'パッケージの種類を指定してください。');
+      return;
+    }
+
+    // パッケージの種類が両方指定されている場合、使い方を表示して処理を終了
+    if (isFlutterPackage && isDartPackage) {
+      showUsage(errorMessage: 'パッケージの種類は1つだけ指定してください。');
+      return;
+    }
+
+    // TODO(masaki): add enum
+    // final packageType = PackageType.fromArgs(parsedArgs);
+    // if (packageType.errorMessage != null) {
+    //   showUsage(errorMessage: packageType.errorMessage);
+    //   return;
+    // }
+
     // パッケージ名が入力されていない場合、エラー文を表示して処理を終了
     final name = parsedArgs.rest.firstOrNull;
     if (name == null) {
@@ -44,6 +68,7 @@ void runCommand(List<String> args) {
     // packagesディレクトリへ移動
     Directory.current = Directory('packages');
 
+    // TODO(masaki): check Dart package or not
     // パッケージ用のプロジェクトを作成
     runFlutter(['create', '-t', 'package', name]);
 
@@ -58,8 +83,10 @@ void runCommand(List<String> args) {
       analysisOptionsFile.path,
     ).createSync(path.join('../..', analysisOptionsFile.path));
 
+    // TODO(masaki): check Dart package or not
     overwriteTestFile(packageName: name);
 
+    // TODO(masaki): check Dart package or not
     // パッケージ説明が引数として指定されていない場合、パッケージ名から作成
     var description = parsedArgs['description'] as String?;
     description ??= '$name用Flutterパッケージ';
@@ -69,6 +96,7 @@ void runCommand(List<String> args) {
       parsedArgs['dev_dependencies'] as List,
     );
     final enableWorkspace = parsedArgs['workspace'] as bool;
+    // TODO(masaki): check Dart package or not
     overwritePubspecYamlFile(
       packageName: name,
       description: description,
