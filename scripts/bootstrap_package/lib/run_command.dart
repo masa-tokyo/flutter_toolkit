@@ -97,11 +97,14 @@ void runCommand(List<String> args) {
       packageType: packageType,
     );
 
-    // LICENSEファイル削除し、プロジェクトルートのものをsymbolic linkで追加
-    final licenseFile = File('LICENSE')..deleteSync();
-    final shouldAddLicense = parsedArgs['license'] as bool;
-    if (shouldAddLicense) {
-      Link(licenseFile.path).createSync(path.join('../..', licenseFile.path));
+    // LICENSEファイルが存在する場合、プロジェクトルートのものをsymbolic linkで追加
+    final licenseFile = File('LICENSE');
+    if (licenseFile.existsSync()) {
+      licenseFile.deleteSync();
+      final shouldAddLicense = parsedArgs['license'] as bool;
+      if (shouldAddLicense) {
+        Link(licenseFile.path).createSync(path.join('../..', licenseFile.path));
+      }
     }
 
     // READMEファイルをパッケージ名のみに上書き
