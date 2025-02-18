@@ -22,6 +22,7 @@ void runCommand(List<String> args) {
           ..addOption('description', abbr: 'd')
           ..addMultiOption('dependencies', abbr: 'p')
           ..addMultiOption('dev_dependencies', abbr: 'v')
+          ..addFlag('workspace', abbr: 'w')
           ..addFlag('license', abbr: 'l')
           ..addFlag('help', abbr: 'h', negatable: false);
     final parsedArgs = parser.parse(args);
@@ -67,12 +68,13 @@ void runCommand(List<String> args) {
     final devDependencies = List<String>.from(
       parsedArgs['dev_dependencies'] as List,
     );
-
+    final enableWorkspace = parsedArgs['workspace'] as bool;
     overwritePubspecYamlFile(
       packageName: name,
       description: description,
       dependencies: dependencies,
       devDependencies: devDependencies,
+      enableWorkspace: enableWorkspace,
     );
 
     // LICENSEファイル削除し、プロジェクトルートのものをsymbolic linkで追加
