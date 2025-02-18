@@ -16,6 +16,7 @@ import 'run_flutter.dart';
 /// - 不要なhomepageフィールドの削除
 /// - 不要なコメントの削除
 /// - 意図しない配信を避けるためpublish_toフィールドを追加
+/// - uses-material-designフィールドを追加
 void overwritePubspecYamlFile({
   required String packageName,
   required String description,
@@ -42,6 +43,7 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
+  uses-material-design: true
 ''';
 
   File('pubspec.yaml').writeAsStringSync(content);
