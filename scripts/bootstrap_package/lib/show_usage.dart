@@ -12,18 +12,21 @@ void showUsage({String? errorMessage}) {
 
   const usage = '''
     
-Usage: fvm dart run bootstrap_package <パッケージ名> [options]
+Usage: dart run bootstrap_package <パッケージ名> [options]
 
 Options:
--d, --description <パッケージ説明>             パッケージの説明を指定
--p, --dependencies <package1,package2>       作成するパッケージの dependencies へ追加したい外部パッケージを指定
--v, --dev_dependencies <package1,package2>   作成するパッケージの dev_dependencies へ追加したい外部パッケージを指定
+-h, --help　　　　　　　                       使い方を表示
+-d, --dart                                   Dart パッケージを作成
+-f, --flutter　　　　　　　　　　　　　　　        Flutter パッケージを作成
 -w, --[no-]workspace　　　　　　　　　　　　　　　Pub Workspace を利用したパッケージを作成
 -l, --[no-]license              　　　　　　　　ルートディレクトリのライセンスへのシンボリックリンクを作成
--h, --help　　　　　　　                        使い方を表示
+
+-p, --dependencies <package1,package2>       作成するパッケージの dependencies へ追加したい外部パッケージを指定
+-v, --dev_dependencies <package1,package2>   作成するパッケージの dev_dependencies へ追加したい外部パッケージを指定
+    --description <パッケージ説明>             パッケージの説明を指定
 
 Example:
-  fvm dart run bootstrap_package login_form -d "ログインフォーム用Flutterパッケージ"
+  fvm dart run bootstrap_package login_form -f --description "ログインフォーム用 Flutter パッケージ"
     ''';
   stdout.writeln(usage);
 }

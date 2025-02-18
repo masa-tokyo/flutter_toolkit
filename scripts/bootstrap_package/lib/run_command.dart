@@ -20,15 +20,14 @@ void runCommand(List<String> args) {
     // 引数を定義
     final parser =
         ArgParser()
-          ..addOption('description', abbr: 'd')
-          ..addMultiOption('dependencies', abbr: 'p')
-          ..addMultiOption('dev_dependencies', abbr: 'v')
-          ..addFlag('flutter', abbr: 'f')
-          // TODO(masaki): consider abbr against description
-          ..addFlag('dart', abbr: 'd')
+          ..addFlag('help', abbr: 'h', negatable: false)
+          ..addFlag('dart', abbr: 'd', negatable: false)
+          ..addFlag('flutter', abbr: 'f', negatable: false)
           ..addFlag('workspace', abbr: 'w')
           ..addFlag('license', abbr: 'l')
-          ..addFlag('help', abbr: 'h', negatable: false);
+          ..addMultiOption('dependencies', abbr: 'p')
+          ..addMultiOption('dev_dependencies', abbr: 'v')
+          ..addOption('description');
     final parsedArgs = parser.parse(args);
 
     // helpオプションが指定された場合、使い方を表示して処理を終了
