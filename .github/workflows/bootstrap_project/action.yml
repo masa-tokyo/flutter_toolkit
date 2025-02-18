@@ -3,10 +3,8 @@ description: "Run common steps for Bootstrap Project"
 runs:
   using: "composite"
   steps:
-    - uses: kuhnroyal/flutter-fvm-config-action@v2
-    - uses: subosito/flutter-action@v2
+    - uses: kuhnroyal/flutter-fvm-config-action/setup@v3
       with:
-        channel: ${{ env.FLUTTER_CHANNEL }}
         cache: true
     - run: echo "MELOS_SDK_PATH=${{ env.FLUTTER_ROOT }}" >> $GITHUB_ENV
       shell: bash
