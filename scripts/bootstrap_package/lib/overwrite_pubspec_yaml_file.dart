@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:pub_semver/pub_semver.dart';
 
 import 'bs_package_exception.dart';
+import 'run_command.dart';
 import 'run_dart.dart';
 import 'run_flutter.dart';
 
@@ -25,7 +26,12 @@ void overwritePubspecYamlFile({
   required List<String> dependencies,
   required List<String> devDependencies,
   required bool enableWorkspace,
+  required PackageType packageType,
 }) {
+  // TODO(masaki): check Dart package
+  if (packageType == PackageType.dart) {
+    return;
+  }
   final dartVersion = getDartCaretVersion();
   final resolution = enableWorkspace ? 'resolution: workspace\n' : '';
 

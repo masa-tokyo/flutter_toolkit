@@ -7,6 +7,7 @@ import 'create_working_file.dart';
 import 'finalize_setup.dart';
 import 'overwrite_pubspec_yaml_file.dart';
 import 'overwrite_test_file.dart';
+import 'run_dart.dart';
 import 'run_flutter.dart';
 import 'show_exception.dart';
 import 'show_usage.dart';
@@ -55,9 +56,13 @@ void runCommand(List<String> args) {
     // packagesディレクトリへ移動
     Directory.current = Directory('packages');
 
-    // TODO(masaki): check Dart package or not
     // パッケージ用のプロジェクトを作成
-    runFlutter(['create', '-t', 'package', name]);
+    switch (packageType) {
+      case PackageType.dart:
+        runDart(['create', '-t', 'package', name]);
+      case PackageType.flutter:
+        runFlutter(['create', '-t', 'package', name]);
+    }
 
     // 作成されたパッケージへ移動
     Directory.current = Directory(name);
@@ -70,26 +75,27 @@ void runCommand(List<String> args) {
       analysisOptionsFile.path,
     ).createSync(path.join('../..', analysisOptionsFile.path));
 
-    // TODO(masaki): check Dart package or not
-    overwriteTestFile(packageName: name);
+    overwriteTestFile(packageName: name, packageType: packageType);
 
-    // TODO(masaki): check Dart package or not
     // パッケージ説明が引数として指定されていない場合、パッケージ名から作成
     var description = parsedArgs['description'] as String?;
-    description ??= '$name用Flutterパッケージ';
+    description ??= switch (packageType) {
+      PackageType.dart => '$name用 Dart パッケージ',
+      PackageType.flutter => '$name用 Flutter パッケージ',
+    };
 
     final dependencies = List<String>.from(parsedArgs['dependencies'] as List);
     final devDependencies = List<String>.from(
       parsedArgs['dev_dependencies'] as List,
     );
     final enableWorkspace = parsedArgs['workspace'] as bool;
-    // TODO(masaki): check Dart package or not
     overwritePubspecYamlFile(
       packageName: name,
       description: description,
       dependencies: dependencies,
       devDependencies: devDependencies,
       enableWorkspace: enableWorkspace,
+      packageType: packageType,
     );
 
     // LICENSEファイル削除し、プロジェクトルートのものをsymbolic linkで追加
