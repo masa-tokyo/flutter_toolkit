@@ -68,13 +68,13 @@ void runCommand(List<String> args) {
     final devDependencies = List<String>.from(
       parsedArgs['dev_dependencies'] as List,
     );
-    final isWorkspace = parsedArgs['workspace'] as bool;
+    final enableWorkspace = parsedArgs['workspace'] as bool;
     overwritePubspecYamlFile(
       packageName: name,
       description: description,
       dependencies: dependencies,
       devDependencies: devDependencies,
-      isWorkspace: isWorkspace,
+      enableWorkspace: enableWorkspace,
     );
 
     // LICENSEファイル削除し、プロジェクトルートのものをsymbolic linkで追加

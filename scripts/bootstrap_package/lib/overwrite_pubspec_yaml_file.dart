@@ -17,17 +17,17 @@ import 'run_flutter.dart';
 /// - 不要なコメントの削除
 /// - 意図しない配信を避けるためpublish_toフィールドを追加
 /// - uses-material-designフィールドを追加
-/// - [isWorkspace] に応じてresolutionフィールドを追加
+/// - [enableWorkspace] に応じてresolutionフィールドを追加
 /// - [dependencies], [devDependencies] を依存関係へ追加
 void overwritePubspecYamlFile({
   required String packageName,
   required String description,
   required List<String> dependencies,
   required List<String> devDependencies,
-  required bool isWorkspace,
+  required bool enableWorkspace,
 }) {
   final dartVersion = getDartCaretVersion();
-  final resolution = isWorkspace ? '  resolution: workspace\n' : '';
+  final resolution = enableWorkspace ? '  resolution: workspace\n' : '';
 
   final content = '''
 name: $packageName
