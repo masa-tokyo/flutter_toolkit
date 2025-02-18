@@ -18,8 +18,8 @@ Options:
 -d, --description <パッケージ説明>             パッケージの説明を指定
 -p, --dependencies <package1,package2>       作成するパッケージの dependencies へ追加したい外部パッケージを指定
 -v, --dev_dependencies <package1,package2>   作成するパッケージの dev_dependencies へ追加したい外部パッケージを指定
--w, --workspace　　　　　　　　　　　　　　　　    Pub Workspace を利用したパッケージを作成
--l, --license              　　　　　　　　　　　ルートディレクトリのライセンスへのシンボリックリンクを作成
+-w, --[no-]workspace　　　　　　　　　　　　　　　Pub Workspace を利用したパッケージを作成
+-l, --[no-]license              　　　　　　　　ルートディレクトリのライセンスへのシンボリックリンクを作成
 -h, --help　　　　　　　                        使い方を表示
 
 Example:
