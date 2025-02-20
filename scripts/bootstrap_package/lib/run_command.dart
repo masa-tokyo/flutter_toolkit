@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:args/args.dart';
 import 'package:path/path.dart' as path;
 
+import 'create_working_file.dart';
 import 'finalize_setup.dart';
 import 'overwrite_pubspec_yaml_file.dart';
 import 'overwrite_test_file.dart';
@@ -70,8 +71,14 @@ void runCommand(List<String> args) {
       Directory('example').deleteSync(recursive: true);
     }
 
-    // TODO(masaki): check library
-    // createWorkingFile(packageName: name);
+    // パッケージ説明が引数として指定されていない場合、パッケージ名から作成
+    var description = parsedArgs['description'] as String?;
+    description ??= switch (packageType) {
+      PackageType.dart => '$name用 Dart パッケージ',
+      PackageType.flutter => '$name用 Flutter パッケージ',
+    };
+
+    createWorkingFile(packageName: name, description: description);
 
     // analysis_options.yamlを削除し、プロジェクトルートのものをsymbolic linkで追加
     final analysisOptionsFile = File('analysis_options.yaml')..deleteSync();
@@ -80,13 +87,6 @@ void runCommand(List<String> args) {
     ).createSync(path.join('../..', analysisOptionsFile.path));
 
     overwriteTestFile(packageName: name, packageType: packageType);
-
-    // パッケージ説明が引数として指定されていない場合、パッケージ名から作成
-    var description = parsedArgs['description'] as String?;
-    description ??= switch (packageType) {
-      PackageType.dart => '$name用 Dart パッケージ',
-      PackageType.flutter => '$name用 Flutter パッケージ',
-    };
 
     final dependencies = List<String>.from(parsedArgs['dependencies'] as List);
     final devDependencies = List<String>.from(
