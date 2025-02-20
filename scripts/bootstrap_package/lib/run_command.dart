@@ -7,6 +7,7 @@ import 'create_working_file.dart';
 import 'finalize_setup.dart';
 import 'overwrite_pubspec_yaml_file.dart';
 import 'overwrite_test_file.dart';
+import 'run_dart.dart';
 import 'run_flutter.dart';
 import 'show_exception.dart';
 import 'show_usage.dart';
@@ -19,12 +20,14 @@ void runCommand(List<String> args) {
     // 引数を定義
     final parser =
         ArgParser()
-          ..addOption('description', abbr: 'd')
-          ..addMultiOption('dependencies', abbr: 'p')
-          ..addMultiOption('dev_dependencies', abbr: 'v')
+          ..addFlag('help', abbr: 'h', negatable: false)
+          ..addFlag('dart', abbr: 'd', negatable: false)
+          ..addFlag('flutter', abbr: 'f', negatable: false)
           ..addFlag('workspace', abbr: 'w')
           ..addFlag('license', abbr: 'l')
-          ..addFlag('help', abbr: 'h', negatable: false);
+          ..addMultiOption('dependencies', abbr: 'p')
+          ..addMultiOption('dev_dependencies', abbr: 'v')
+          ..addOption('description');
     final parsedArgs = parser.parse(args);
 
     // helpオプションが指定された場合、使い方を表示して処理を終了
@@ -33,6 +36,14 @@ void runCommand(List<String> args) {
       showUsage();
       return;
     }
+
+    final packageTypeResult = PackageType.fromParsedArgs(parsedArgs);
+    // 不適切な引数の渡し方をされている場合、エラー文を表示して処理を終了
+    if (packageTypeResult.errorMessage != null) {
+      showUsage(errorMessage: packageTypeResult.errorMessage);
+      return;
+    }
+    final packageType = packageTypeResult.value!;
 
     // パッケージ名が入力されていない場合、エラー文を表示して処理を終了
     final name = parsedArgs.rest.firstOrNull;
@@ -45,12 +56,29 @@ void runCommand(List<String> args) {
     Directory.current = Directory('packages');
 
     // パッケージ用のプロジェクトを作成
-    runFlutter(['create', '-t', 'package', name]);
+    switch (packageType) {
+      case PackageType.dart:
+        runDart(['create', '-t', 'package', name]);
+      case PackageType.flutter:
+        runFlutter(['create', '-t', 'package', name]);
+    }
 
     // 作成されたパッケージへ移動
     Directory.current = Directory(name);
 
-    createWorkingFile(packageName: name);
+    // Dart パッケージの場合、example ディレクトリを削除
+    if (packageType == PackageType.dart) {
+      Directory('example').deleteSync(recursive: true);
+    }
+
+    // パッケージ説明が引数として指定されていない場合、パッケージ名から作成
+    var description = parsedArgs['description'] as String?;
+    description ??= switch (packageType) {
+      PackageType.dart => '$name用 Dart パッケージ',
+      PackageType.flutter => '$name用 Flutter パッケージ',
+    };
+
+    createWorkingFile(packageName: name, description: description);
 
     // analysis_options.yamlを削除し、プロジェクトルートのものをsymbolic linkで追加
     final analysisOptionsFile = File('analysis_options.yaml')..deleteSync();
@@ -58,11 +86,7 @@ void runCommand(List<String> args) {
       analysisOptionsFile.path,
     ).createSync(path.join('../..', analysisOptionsFile.path));
 
-    overwriteTestFile(packageName: name);
-
-    // パッケージ説明が引数として指定されていない場合、パッケージ名から作成
-    var description = parsedArgs['description'] as String?;
-    description ??= '$name用Flutterパッケージ';
+    overwriteTestFile(packageName: name, packageType: packageType);
 
     final dependencies = List<String>.from(parsedArgs['dependencies'] as List);
     final devDependencies = List<String>.from(
@@ -75,24 +99,62 @@ void runCommand(List<String> args) {
       dependencies: dependencies,
       devDependencies: devDependencies,
       enableWorkspace: enableWorkspace,
+      packageType: packageType,
     );
 
-    // LICENSEファイル削除し、プロジェクトルートのものをsymbolic linkで追加
-    final licenseFile = File('LICENSE')..deleteSync();
-    final shouldAddLicense = parsedArgs['license'] as bool;
-    if (shouldAddLicense) {
-      Link(licenseFile.path).createSync(path.join('../..', licenseFile.path));
+    // LICENSEファイルが存在する場合、プロジェクトルートのものをsymbolic linkで追加
+    final licenseFile = File('LICENSE');
+    if (licenseFile.existsSync()) {
+      licenseFile.deleteSync();
+      final shouldAddLicense = parsedArgs['license'] as bool;
+      if (shouldAddLicense) {
+        Link(licenseFile.path).createSync(path.join('../..', licenseFile.path));
+      }
     }
 
     // READMEファイルをパッケージ名のみに上書き
     final packageTitle = '# $name';
     File('README.md').writeAsStringSync(packageTitle);
 
-    finalizeSetup();
+    finalizeSetup(packageType: packageType);
   } on FormatException catch (_) {
     // '-d'のようなoptionコマンドに続く引数が入力されていない場合
     showUsage(errorMessage: 'オプションコマンドの使い方が間違っています。');
   } on Exception catch (e, s) {
     showException(e, s);
+  }
+}
+
+/// 生成するパッケージの種類
+enum PackageType {
+  dart,
+  flutter;
+
+  const PackageType();
+
+  /// [ArgResults]から[PackageType]及びエラーメッセージを取得する
+  static ({PackageType? value, String? errorMessage}) fromParsedArgs(
+    ArgResults parsedArgs,
+  ) {
+    final isFlutterPackage = parsedArgs['flutter'] as bool;
+    final isDartPackage = parsedArgs['dart'] as bool;
+
+    // パッケージの種類が選択されていない場合
+    if (!isFlutterPackage && !isDartPackage) {
+      return (value: null, errorMessage: 'パッケージの種類を指定してください。');
+    }
+
+    // パッケージの種類が両方指定されている場合
+    if (isFlutterPackage && isDartPackage) {
+      return (value: null, errorMessage: 'パッケージの種類は1つだけ指定してください。');
+    }
+
+    assert(isFlutterPackage || isDartPackage);
+
+    if (isFlutterPackage) {
+      return (value: PackageType.flutter, errorMessage: null);
+    } else {
+      return (value: PackageType.dart, errorMessage: null);
+    }
   }
 }
