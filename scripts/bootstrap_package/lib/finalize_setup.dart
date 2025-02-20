@@ -1,15 +1,25 @@
+import 'dart:io';
+
 import 'run_command.dart';
 import 'run_dart.dart';
-import 'run_flutter.dart';
 
 /// [runCommand]の最後に実行する関数
-void finalizeSetup({required PackageType packageType}) {
-  // 生成したシンボリックリンクを同期させる
-  switch (packageType) {
-    case PackageType.dart:
-      runDart(['pub', 'get']);
-    case PackageType.flutter:
-      runFlutter(['pub', 'get']);
+void finalizeSetup({
+  required PackageType packageType,
+  required bool enableWorkspace,
+  required String packageName,
+}) {
+  if (enableWorkspace) {
+    stdout.writeln('''
+Pub Workspace を有効化するために、以下のようにパッケージを追加してください。
+```yaml
+workspace:
+  - packages/$packageName
+```
+その後、`melos bs`コマンドにより、生成したシンボリックリンクやパッケージのバージョンを同期してください。''');
+  } else {
+    // 生成したシンボリックリンクやパッケージのバージョンを同期させる
+    Process.runSync('melos', ['bootstrap']);
   }
 
   // 生成されたパッケージ内のファイルを整形

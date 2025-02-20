@@ -1,3 +1,7 @@
+## 1.1.2
+
+- Enabled adding dependencies for workspace ([#14](https://github.com/masa-tokyo/flutter_toolkit/pull/14))
+
 ## 1.1.1
 
 - Removed unused content in the src directory ([#13](https://github.com/masa-tokyo/flutter_toolkit/pull/13))

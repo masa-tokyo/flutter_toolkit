@@ -116,7 +116,11 @@ void runCommand(List<String> args) {
     final packageTitle = '# $name';
     File('README.md').writeAsStringSync(packageTitle);
 
-    finalizeSetup(packageType: packageType);
+    finalizeSetup(
+      packageType: packageType,
+      enableWorkspace: enableWorkspace,
+      packageName: name,
+    );
   } on FormatException catch (_) {
     // '-d'のようなoptionコマンドに続く引数が入力されていない場合
     showUsage(errorMessage: 'オプションコマンドの使い方が間違っています。');
