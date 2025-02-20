@@ -125,12 +125,14 @@ void runCommand(List<String> args) {
   }
 }
 
+/// 生成するパッケージの種類
 enum PackageType {
   dart,
   flutter;
 
   const PackageType();
 
+  /// [ArgResults]から[PackageType]及びエラーメッセージを取得する
   static ({PackageType? value, String? errorMessage}) fromParsedArgs(
     ArgResults parsedArgs,
   ) {
