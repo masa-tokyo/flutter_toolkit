@@ -30,7 +30,7 @@ void overwritePubspecYamlFile({
 }) {
   final dartVersion = getDartCaretVersion();
   final resolution = enableWorkspace ? 'resolution: workspace\n' : '';
-  final dependenciesBlock = switch (packageType) {
+  final dependencyEntries = switch (packageType) {
     PackageType.dart => '',
     PackageType.flutter => '''
   flutter:
@@ -63,7 +63,7 @@ environment:
   sdk: $dartVersion
 $resolution
 dependencies:
-$dependenciesBlock
+$dependencyEntries
 dev_dependencies:
 $devDependencyEntries
 $flutterBlock
