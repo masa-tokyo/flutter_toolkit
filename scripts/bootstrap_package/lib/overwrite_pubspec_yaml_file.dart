@@ -6,7 +6,6 @@ import 'package:pub_semver/pub_semver.dart';
 import 'bs_package_exception.dart';
 import 'run_command.dart';
 import 'run_dart.dart';
-import 'run_flutter.dart';
 
 /// pubspec.yamlファイルを上書き作成するための関数
 ///
@@ -30,22 +29,31 @@ void overwritePubspecYamlFile({
 }) {
   final dartVersion = getDartCaretVersion();
   final resolution = enableWorkspace ? 'resolution: workspace\n' : '';
-  final dependencyEntries = switch (packageType) {
-    PackageType.dart => '',
-    PackageType.flutter => '''
-  flutter:
-    sdk: flutter
-''',
+
+  // インデントやコロンを付与してアルファベット順に並び替える
+  final reOrderedDependencies = [
+    if (packageType == PackageType.flutter) '  flutter:\n    sdk: flutter',
+    ...dependencies.map((e) => '  $e:'),
+  ]..sort();
+  final testPackage = switch (packageType) {
+    PackageType.dart => '  test:',
+    PackageType.flutter => '  flutter_test:\n    sdk: flutter',
   };
-  final devDependencyEntries = switch (packageType) {
-    PackageType.dart => '''
-  test:
-''',
-    PackageType.flutter => '''
-  flutter_test:
-    sdk: flutter
-''',
-  };
+  final reOrderedDevDependencies = [
+    testPackage,
+    ...devDependencies.map((e) => '  $e:'),
+  ]..sort();
+
+  // 改行付きの文字列へ変換
+  final dependencyEntries =
+      reOrderedDependencies.isEmpty
+          ? ''
+          : '${reOrderedDependencies.join('\n')}\n';
+  final devDependencyEntries =
+      reOrderedDevDependencies.isEmpty
+          ? ''
+          : '${reOrderedDevDependencies.join('\n')}\n';
+
   final flutterBlock =
       packageType == PackageType.flutter
           ? '''
@@ -70,18 +78,6 @@ $flutterBlock
 ''';
 
   File('pubspec.yaml').writeAsStringSync(content);
-
-  final runCommand = packageType == PackageType.dart ? runDart : runFlutter;
-
-  // dependencies を追加
-  for (final dependency in dependencies) {
-    runCommand(['pub', 'add', dependency]);
-  }
-
-  // devDependencies を追加
-  for (final devDependency in devDependencies) {
-    runCommand(['pub', 'add', '--dev', devDependency]);
-  }
 }
 
 /// pubspec.yamlに記載するdart sdkのバージョンを取得する関数
