@@ -83,8 +83,6 @@ $flutterBlock
 /// pubspec.yamlに記載するdart sdkのバージョンを取得する関数
 ///
 /// FVMのdart versionを取得し、そのバージョンをキャレット記号にて記述する。
-/// 尚、pubspec.yamlファイル作成後に`melos bs`コマンドを実行しても同様の結果になるが、
-/// コマンドの実行時間削減のためにこのように実装している。
 @visibleForTesting
 String getDartCaretVersion() {
   final versionResult = runDart(['--version']);
