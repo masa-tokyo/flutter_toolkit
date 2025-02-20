@@ -71,14 +71,16 @@ $flutterBlock
 
   File('pubspec.yaml').writeAsStringSync(content);
 
+  final runCommand = packageType == PackageType.dart ? runDart : runFlutter;
+
   // dependencies を追加
   for (final dependency in dependencies) {
-    runFlutter(['pub', 'add', dependency]);
+    runCommand(['pub', 'add', dependency]);
   }
 
   // devDependencies を追加
   for (final devDependency in devDependencies) {
-    runFlutter(['pub', 'add', '--dev', devDependency]);
+    runCommand(['pub', 'add', '--dev', devDependency]);
   }
 }
 
