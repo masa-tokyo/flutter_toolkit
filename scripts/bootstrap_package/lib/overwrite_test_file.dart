@@ -12,15 +12,16 @@ void overwriteTestFile({
   required String packageName,
   required PackageType packageType,
 }) {
-  // TODO(masaki): check Dart package
-  if (packageType == PackageType.dart) {
-    return;
-  }
+  final testPackage = switch (packageType) {
+    PackageType.dart => "import 'package:test/test.dart';",
+    PackageType.flutter => "import 'package:flutter_test/flutter_test.dart';",
+  };
+
   final content = '''
-import 'package:flutter_test/flutter_test.dart';
+$testPackage
 
 void main() {
-  test('$packageName test', () {});
+  test('test', () {});
 }
 ''';
 
