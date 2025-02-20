@@ -9,6 +9,9 @@ void createWorkingFile({
   required String packageName,
   required String description,
 }) {
+  // lib ディレクトリ内の既存ファイルを削除
+  Directory('lib').deleteSync(recursive: true);
+
   // srcディレクトリへファイルを作成
   final baseFileName = '${packageName}_base.dart';
   File(path.join('lib/src', baseFileName)).createSync(recursive: true);

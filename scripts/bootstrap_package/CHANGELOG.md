@@ -1,3 +1,7 @@
+## 1.1.1
+
+- Removed unused content in the src directory ([#13](https://github.com/masa-tokyo/flutter_toolkit/pull/13))
+
 ## 1.1.0
 
 - Added optional commands to create a Dart or Flutter package ([#11](https://github.com/masa-tokyo/flutter_toolkit/pull/11))
