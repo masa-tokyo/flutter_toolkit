@@ -28,12 +28,30 @@ void overwritePubspecYamlFile({
   required bool enableWorkspace,
   required PackageType packageType,
 }) {
-  // TODO(masaki): check Dart package
-  if (packageType == PackageType.dart) {
-    return;
-  }
   final dartVersion = getDartCaretVersion();
   final resolution = enableWorkspace ? 'resolution: workspace\n' : '';
+  final dependenciesBlock = switch (packageType) {
+    PackageType.dart => '',
+    PackageType.flutter => '''
+  flutter:
+    sdk: flutter
+''',
+  };
+  final devDependencyEntries = switch (packageType) {
+    PackageType.dart => '''
+  test:
+''',
+    PackageType.flutter => '''
+  flutter_test:
+    sdk: flutter
+''',
+  };
+  final flutterBlock =
+      packageType == PackageType.flutter
+          ? '''
+flutter:
+  uses-material-design: true'''
+          : '';
 
   final content = '''
 name: $packageName
@@ -45,15 +63,10 @@ environment:
   sdk: $dartVersion
 $resolution
 dependencies:
-  flutter:
-    sdk: flutter
-
+$dependenciesBlock
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-
-flutter:
-  uses-material-design: true
+$devDependencyEntries
+$flutterBlock
 ''';
 
   File('pubspec.yaml').writeAsStringSync(content);
