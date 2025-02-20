@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:args/args.dart';
 import 'package:path/path.dart' as path;
 
-import 'create_working_file.dart';
 import 'finalize_setup.dart';
 import 'overwrite_pubspec_yaml_file.dart';
 import 'overwrite_test_file.dart';
@@ -66,7 +65,13 @@ void runCommand(List<String> args) {
     // 作成されたパッケージへ移動
     Directory.current = Directory(name);
 
-    createWorkingFile(packageName: name);
+    // Dart パッケージの場合、example ディレクトリを削除
+    if (packageType == PackageType.dart) {
+      Directory('example').deleteSync(recursive: true);
+    }
+
+    // TODO(masaki): check library
+    // createWorkingFile(packageName: name);
 
     // analysis_options.yamlを削除し、プロジェクトルートのものをsymbolic linkで追加
     final analysisOptionsFile = File('analysis_options.yaml')..deleteSync();
