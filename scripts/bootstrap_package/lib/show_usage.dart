@@ -21,8 +21,8 @@ Options:
 -w, --[no-]workspace　　　　　　　　　　　　　　　Pub Workspace を利用したパッケージを作成
 -l, --[no-]license              　　　　　　　　ルートディレクトリのライセンスへのシンボリックリンクを作成
 
--p, --dependencies <package1,package2>       作成するパッケージの dependencies へ追加したい外部パッケージを指定
--v, --dev_dependencies <package1,package2>   作成するパッケージの dev_dependencies へ追加したい外部パッケージを指定
+-p, --dependencies=<package1,package2>       作成するパッケージの dependencies へ追加したい外部パッケージを指定 (-w が false の場合のみ）
+-v, --dev_dependencies=<package1,package2>   作成するパッケージの dev_dependencies へ追加したい外部パッケージを指定 (-w が false の場合のみ）
     --description <パッケージ説明>             パッケージの説明を指定
 
 Example:
