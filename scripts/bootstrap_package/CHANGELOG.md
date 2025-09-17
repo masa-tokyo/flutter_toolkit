@@ -1,3 +1,7 @@
+## 1.2.0
+
+- Changed minimum Dart version to ^3.9.0 ([#15](https://github.com/masa-tokyo/flutter_toolkit/pull/15))
+
 ## 1.1.2
 
 - Enabled adding dependencies for workspace ([#14](https://github.com/masa-tokyo/flutter_toolkit/pull/14))
