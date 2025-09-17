@@ -18,16 +18,15 @@ import 'show_usage.dart';
 void runCommand(List<String> args) {
   try {
     // 引数を定義
-    final parser =
-        ArgParser()
-          ..addFlag('help', abbr: 'h', negatable: false)
-          ..addFlag('dart', abbr: 'd', negatable: false)
-          ..addFlag('flutter', abbr: 'f', negatable: false)
-          ..addFlag('workspace', abbr: 'w')
-          ..addFlag('license', abbr: 'l')
-          ..addMultiOption('dependencies', abbr: 'p')
-          ..addMultiOption('dev_dependencies', abbr: 'v')
-          ..addOption('description');
+    final parser = ArgParser()
+      ..addFlag('help', abbr: 'h', negatable: false)
+      ..addFlag('dart', abbr: 'd', negatable: false)
+      ..addFlag('flutter', abbr: 'f', negatable: false)
+      ..addFlag('workspace', abbr: 'w')
+      ..addFlag('license', abbr: 'l')
+      ..addMultiOption('dependencies', abbr: 'p')
+      ..addMultiOption('dev_dependencies', abbr: 'v')
+      ..addOption('description');
     final parsedArgs = parser.parse(args);
 
     // helpオプションが指定された場合、使い方を表示して処理を終了
@@ -72,11 +71,12 @@ void runCommand(List<String> args) {
     }
 
     // パッケージ説明が引数として指定されていない場合、パッケージ名から作成
-    var description = parsedArgs['description'] as String?;
-    description ??= switch (packageType) {
-      PackageType.dart => '$name用 Dart パッケージ',
-      PackageType.flutter => '$name用 Flutter パッケージ',
-    };
+    final description =
+        parsedArgs['description'] as String? ??
+        switch (packageType) {
+          PackageType.dart => '$name 用 Dart パッケージ',
+          PackageType.flutter => '$name 用 Flutter パッケージ',
+        };
 
     createWorkingFile(packageName: name, description: description);
 

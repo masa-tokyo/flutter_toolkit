@@ -17,7 +17,8 @@ void overwriteTestFile({
     PackageType.flutter => "import 'package:flutter_test/flutter_test.dart';",
   };
 
-  final content = '''
+  final content =
+      '''
 $testPackage
 
 void main() {

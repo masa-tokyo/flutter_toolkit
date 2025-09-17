@@ -17,7 +17,8 @@ void createWorkingFile({
   File(path.join('lib/src', baseFileName)).createSync(recursive: true);
 
   // lib直下のファイルへパッケージの説明とexport文を記載
-  final exportStatement = '''
+  final exportStatement =
+      '''
 /// $description
 library;
 

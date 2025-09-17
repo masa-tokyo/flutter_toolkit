@@ -45,23 +45,21 @@ void overwritePubspecYamlFile({
   ]..sort();
 
   // 改行付きの文字列へ変換
-  final dependencyEntries =
-      reOrderedDependencies.isEmpty
-          ? ''
-          : '${reOrderedDependencies.join('\n')}\n';
-  final devDependencyEntries =
-      reOrderedDevDependencies.isEmpty
-          ? ''
-          : '${reOrderedDevDependencies.join('\n')}\n';
+  final dependencyEntries = reOrderedDependencies.isEmpty
+      ? ''
+      : '${reOrderedDependencies.join('\n')}\n';
+  final devDependencyEntries = reOrderedDevDependencies.isEmpty
+      ? ''
+      : '${reOrderedDevDependencies.join('\n')}\n';
 
-  final flutterBlock =
-      packageType == PackageType.flutter
-          ? '''
+  final flutterBlock = packageType == PackageType.flutter
+      ? '''
 flutter:
   uses-material-design: true'''
-          : '';
+      : '';
 
-  final content = '''
+  final content =
+      '''
 name: $packageName
 description: $description
 publish_to: 'none'

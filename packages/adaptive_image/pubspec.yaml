@@ -1,10 +1,10 @@
 name: adaptive_image
 description: adaptive_image用Flutterパッケージ
 publish_to: 'none'
-version: 0.0.1
+version: 1.1.0
 
 environment:
-  sdk: ^3.7.0
+  sdk: ^3.9.0
 
 dependencies:
   flutter:
