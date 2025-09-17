@@ -55,7 +55,8 @@ void _expectNonErrorResult(ProcessResult result) {
   expect(
     result.exitCode,
     0,
-    reason: '''
+    reason:
+        '''
 エラー内容:
 ${result.stderr}
 出力内容:

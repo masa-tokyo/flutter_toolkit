@@ -18,16 +18,15 @@ import 'show_usage.dart';
 void runCommand(List<String> args) {
   try {
     // 引数を定義
-    final parser =
-        ArgParser()
-          ..addFlag('help', abbr: 'h', negatable: false)
-          ..addFlag('dart', abbr: 'd', negatable: false)
-          ..addFlag('flutter', abbr: 'f', negatable: false)
-          ..addFlag('workspace', abbr: 'w')
-          ..addFlag('license', abbr: 'l')
-          ..addMultiOption('dependencies', abbr: 'p')
-          ..addMultiOption('dev_dependencies', abbr: 'v')
-          ..addOption('description');
+    final parser = ArgParser()
+      ..addFlag('help', abbr: 'h', negatable: false)
+      ..addFlag('dart', abbr: 'd', negatable: false)
+      ..addFlag('flutter', abbr: 'f', negatable: false)
+      ..addFlag('workspace', abbr: 'w')
+      ..addFlag('license', abbr: 'l')
+      ..addMultiOption('dependencies', abbr: 'p')
+      ..addMultiOption('dev_dependencies', abbr: 'v')
+      ..addOption('description');
     final parsedArgs = parser.parse(args);
 
     // helpオプションが指定された場合、使い方を表示して処理を終了
